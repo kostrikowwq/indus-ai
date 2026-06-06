@@ -1,0 +1,62 @@
+[gd_scene format=3 uid="uid://d7yxmj7dxwki"]
+
+[ext_resource type="Script" uid="uid://bl7vvjumuvj1v" path="res://scripts/main_game.gd" id="1_1oj5k"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_yx7mw"]
+
+[node name="MainGame" type="Control" unique_id=382347058]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_1oj5k")
+
+[node name="Panel" type="Panel" parent="." unique_id=1608510619]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ChatDisplay" type="RichTextLabel" parent="Panel" unique_id=245962350]
+layout_mode = 0
+offset_left = -1.0
+offset_top = 64.0
+offset_right = 1151.0
+offset_bottom = 524.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel" unique_id=517620341]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -153.0
+offset_top = -40.0
+offset_right = 153.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="OptionButton1" type="Button" parent="Panel/HBoxContainer" unique_id=1620940906]
+layout_mode = 2
+text = "Вариант ответа 1"
+
+[node name="OptionButton2" type="Button" parent="Panel/HBoxContainer" unique_id=195588395]
+layout_mode = 2
+text = "Вариант ответа 2"
+icon = SubResource("ViewportTexture_yx7mw")
+
+[node name="MoneyLabel" type="Label" parent="Panel" unique_id=852107983]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -93.0
+offset_right = 96.0
+offset_bottom = 39.0
+grow_horizontal = 2
+text = "Баланс: 0.0 $"
