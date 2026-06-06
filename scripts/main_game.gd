@@ -128,10 +128,12 @@ func check_answer(player_choice: int) -> void:
 	if player_choice == q["correct"]:
 		GameManager.player_money += q["reward"]
 		print("Результат: ПРАВИЛЬНО! Нараховано +", q["reward"], " $")
+		$successSound.play()
 	else:
 		GameManager.player_money -= q["penalty"]
 		GameManager.player_penalties += 1
 		print("Результат: ПОМИЛКА! Штраф -", q["penalty"], " $ | Всього штрафів: ", GameManager.player_penalties)
+		$failSound.play()
 	
 	GameManager.current_question_index += 1
 	print("Стан гри: Перехід до наступного індексу: ", GameManager.current_question_index)

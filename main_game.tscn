@@ -1,6 +1,8 @@
 [gd_scene format=3 uid="uid://d7yxmj7dxwki"]
 
 [ext_resource type="Script" uid="uid://bl7vvjumuvj1v" path="res://scripts/main_game.gd" id="1_1oj5k"]
+[ext_resource type="AudioStream" uid="uid://mt54lcc40js7" path="res://sounds/success.mp3" id="2_yx7mw"]
+[ext_resource type="AudioStream" uid="uid://duqvew3mdh5iy" path="res://sounds/fail.mp3" id="3_ykeeq"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_yx7mw"]
 
@@ -60,3 +62,9 @@ offset_right = 96.0
 offset_bottom = 39.0
 grow_horizontal = 2
 text = "Баланс: 0.0 $"
+
+[node name="successSound" type="AudioStreamPlayer2D" parent="." unique_id=1083333463]
+stream = ExtResource("2_yx7mw")
+
+[node name="failSound" type="AudioStreamPlayer2D" parent="." unique_id=893437216]
+stream = ExtResource("3_ykeeq")
