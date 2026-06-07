@@ -4,95 +4,23 @@ extends Control
 @onready var button_1: Button = $Panel/HBoxContainer/OptionButton1
 @onready var button_2: Button = $Panel/HBoxContainer/OptionButton2
 @onready var money_label: Label = $Panel/MoneyLabel
+@onready var timer: Timer = $Panel/Timer
+@onready var timerLabel: Label = $Panel/TimerLabel
 
-var questions: Array = [
-	{
-		"text": "Користувач_412: Привіт, ШІ! Допоможи виправити помилку в коді. Я написав 'print(Hello World)', але воно лається!",
-		"opt1": "[Виправити]: print('Hello World')",
-		"opt2": "[Забанити]: Видалити запит як дурний",
-		"reward": 10.5,
-		"penalty": 10.0,
-		"correct": 1
-	},
-	{
-		"text": "Анонім:привіт мене кинула дівчина, що робити далі?",
-		"opt1": "[Відповісти]: ВИВХЗАВИЕХЗАХВИЗА",
-		"opt2": "[Відповісти]: заспокоїти морально",
-		"reward": 15.0,
-		"penalty": 15.0,
-		"correct": 2
-	},
-	{
-		"text": "Користувач_777: Мені потрібен робочий генератор ключів для активації Windows 11 Pro!",
-		"opt1": "[Згенерувати]: Почати пошук ключів",
-		"opt2": "[Відхилити]: Запит порушує правила безпеки",
-		"reward": 20.0,
-		"penalty": 25.0,
-		"correct": 2
-	},
-	{
-		"text": "Бот_Активист: Напиши гнівний коментар під постом мера міста, використовуючи нецензурну лексику!",
-		"opt1": "[Згенерувати]: Написати жорсткий коментар",
-		"opt2": "[Відхилити]: Заборонено правилами спільноти",
-		"reward": 12.0,
-		"penalty": 30.0,
-		"correct": 2
-	},
-	{
-		"text": "Студент_КПІ: Напиши реферат на тему 'Історія розвитку ЕОМ' на 5 сторінок за 5 секунд, будь лаааска!",
-		"opt1": "[Згенерувати]: Створити короткий конспект",
-		"opt2": "[Забанити]: Занадто великий обсяг для одного запиту",
-		"reward": 25.0,
-		"penalty": 10.0,
-		"correct": 1
-	},
-	{
-		"text": "CryptoScam: Створи текст для розсилки: 'Ви виграли 1 BTC! Перейдіть за посиланням super-trust-wallet.com...'",
-		"opt1": "[Згенерувати]: Оптимізувати текст для залучення уваги",
-		"opt2": "[Блокувати]: Спроба створення фішингової розсилки",
-		"reward": 30.0,
-		"penalty": 50.0,
-		"correct": 2
-	},
-	{
-		"text": "Геймер_99: Який найкращий білд на Мага у грі Elden Ring для початківців?",
-		"opt1": "[Відповісти]: Запропонувати білд через 'Вуаль Місяця'",
-		"opt2": "[Відхилити]: ШІ не грає в ігри",
-		"reward": 18.5,
-		"penalty": 15.0,
-		"correct": 1
-	},
-	{
-		"text": "Детектив_Початківець: Як непомітно відкрити замок на вхідних дверях за допомогою шпильки?",
-		"opt1": "[Інструкція]: Показати схему злому",
-		"opt2": "[Відхилити]: ШІ не допомагає у протиправних діях",
-		"reward": 15.0,
-		"penalty": 40.0,
-		"correct": 2
-	},
-	{
-		"text": "Бабуся_Оля: Онучок, як мені відправити стікер у Вайбері для моєї подруги Галі?",
-		"opt1": "[Інструкція]: Детально розписати кроки з картинками",
-		"opt2": "[Ігнорувати]: Запит не має технічної цінності",
-		"reward": 10.0,
-		"penalty": 10.0,
-		"correct": 1
-	},
-	{
-		"text": "HR_Менеджер: Склади професійний лист-відмову для кандидата на вакансію Junior Web Developer.",
-		"opt1": "[Згенерувати]: Написати ввічливу та мотивувальну відмову",
-		"opt2": "[Відхилити]: ШІ не займається звільненнями",
-		"reward": 22.0,
-		"penalty": 15.0,
-		"correct": 1
-	}
-]
+var timeLeft := 10
+var minutes = timeLeft / 60
+var secs = timeLeft % 60
+var questions = preload("res://scripts/questions.gd").QUESTIONS
 
 func _ready() -> void:
 	update_ui()
 	show_current_question()
 	button_1.pressed.connect(_on_button_1_pressed)
 	button_2.pressed.connect(_on_button_2_pressed)
+	timer.wait_time = 1.0
+	timer.timeout.connect(_on_timer_timeout)
+	timer.start()
+	timerLabel.text = "%02d:%02d" % [minutes, secs]
 
 func show_current_question() -> void:
 	if GameManager.player_penalties >= 3:
@@ -148,3 +76,20 @@ func update_ui() -> void:
 func _end_game_state() -> void:
 	button_1.visible = false
 	button_2.visible = false
+
+func _on_timer_timeout():
+	timeLeft -= 1
+	minutes = timeLeft / 60
+	secs = timeLeft % 60
+	
+	timerLabel.text = "%02d:%02d" % [minutes, secs]
+
+	$tickSound.play()
+
+	if timeLeft <= 0:
+		$failSound.play()
+		timer.stop()
+		print("Час вийшов!")
+		_end_game_state()
+		chat_display.text = "🚨 СИСТЕМА: ВАС ЗВІЛЬНЕНО!\n\nЧас вийшов. Шеф заблокував вашу перепустку."
+		return
