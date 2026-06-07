@@ -12,6 +12,10 @@ var minutes = timeLeft / 60
 var secs = timeLeft % 60
 var questions = preload("res://scripts/questions.gd").QUESTIONS
 
+var typing_time := 1.0
+var typing_progress := 0.0
+var full_text := ""
+
 func _ready() -> void:
 	update_ui()
 	show_current_question()
@@ -19,8 +23,16 @@ func _ready() -> void:
 	button_2.pressed.connect(_on_button_2_pressed)
 	timer.wait_time = 1.0
 	timer.timeout.connect(_on_timer_timeout)
-	timer.start()
 	timerLabel.text = "%02d:%02d" % [minutes, secs]
+	await get_tree().create_timer(2).timeout
+	timer.start()
+	
+func type_text(text_to_show: String):
+	full_text = text_to_show
+	chat_display.text = full_text
+	chat_display.visible_characters = 0
+	typing_progress = 0.0
+	$typingSound.play()
 
 func show_current_question() -> void:
 	if GameManager.player_penalties >= 3:
@@ -30,7 +42,7 @@ func show_current_question() -> void:
 
 	if GameManager.current_question_index < questions.size():
 		var q = questions[GameManager.current_question_index]
-		chat_display.text = q["text"]
+		type_text(q["text"])
 		button_1.text = q["opt1"]
 		button_2.text = q["opt2"]
 	else:
@@ -45,6 +57,8 @@ func _on_button_1_pressed() -> void:
 
 func _on_button_2_pressed() -> void:
 	check_answer(2)
+	
+
 
 func check_answer(player_choice: int) -> void:
 	var q = questions[GameManager.current_question_index]
@@ -93,3 +107,15 @@ func _on_timer_timeout():
 		_end_game_state()
 		chat_display.text = "🚨 СИСТЕМА: ВАС ЗВІЛЬНЕНО!\n\nЧас вийшов. Шеф заблокував вашу перепустку."
 		return
+		
+func _process(delta):
+	if chat_display.visible_characters < full_text.length():
+		typing_progress += delta
+
+		var percent = typing_progress / typing_time
+
+		chat_display.visible_characters = int(
+			full_text.length() * min(percent, 1.0)
+		)
+	if chat_display.visible_characters >= full_text.length():
+		$typingSound.stop()

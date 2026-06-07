@@ -4,6 +4,7 @@
 [ext_resource type="AudioStream" uid="uid://mt54lcc40js7" path="res://sounds/success.mp3" id="2_yx7mw"]
 [ext_resource type="AudioStream" uid="uid://duqvew3mdh5iy" path="res://sounds/fail.mp3" id="3_ykeeq"]
 [ext_resource type="AudioStream" uid="uid://cgbhs1l3vrbx4" path="res://sounds/tick.mp3" id="4_6bm6p"]
+[ext_resource type="AudioStream" uid="uid://dniwsywqv3up8" path="res://sounds/typing.mp3" id="5_dugkq"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_yx7mw"]
 
@@ -73,6 +74,8 @@ offset_bottom = 33.0
 
 [node name="Timer" type="Timer" parent="Panel" unique_id=140338231]
 
+[node name="TyperLabel" type="Timer" parent="Panel" unique_id=682224700]
+
 [node name="successSound" type="AudioStreamPlayer2D" parent="." unique_id=1083333463]
 stream = ExtResource("2_yx7mw")
 
@@ -81,3 +84,6 @@ stream = ExtResource("3_ykeeq")
 
 [node name="tickSound" type="AudioStreamPlayer2D" parent="." unique_id=1228275751]
 stream = ExtResource("4_6bm6p")
+
+[node name="typingSound" type="AudioStreamPlayer2D" parent="." unique_id=1148828520]
+stream = ExtResource("5_dugkq")
