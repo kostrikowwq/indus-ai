@@ -7,10 +7,10 @@ extends Control
 @onready var timer: Timer = $Panel/Timer
 @onready var timerLabel: Label = $Panel/TimerLabel
 
-var timeLeft := 10
 var minutes = timeLeft / 60
 var secs = timeLeft % 60
 var questions = preload("res://scripts/questions.gd").QUESTIONS
+var timeLeft := questions.size() * 10
 
 var typing_time := 1.0
 var typing_progress := 0.0
@@ -38,6 +38,7 @@ func show_current_question() -> void:
 	if GameManager.player_penalties >= 3:
 		chat_display.text = "🚨 СИСТЕМА: ВАС ЗВІЛЬНЕНО!\n\nВи допустили забагато помилок (3 штрафи). Шеф заблокував вашу перепустку."
 		_end_game_state()
+		timer.stop()
 		return
 
 	if GameManager.current_question_index < questions.size():
@@ -51,6 +52,8 @@ func show_current_question() -> void:
 		else:
 			chat_display.text = "😐 ЗМІНУ ЗАВЕРШЕНО...\n\nАле ви закінчили день у мінусі. Старайтеся краще наступного رازом."
 		_end_game_state()
+		$victorySound.play()
+		timer.stop()
 
 func _on_button_1_pressed() -> void:
 	check_answer(1)

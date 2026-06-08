@@ -5,6 +5,7 @@
 [ext_resource type="AudioStream" uid="uid://duqvew3mdh5iy" path="res://sounds/fail.mp3" id="3_ykeeq"]
 [ext_resource type="AudioStream" uid="uid://cgbhs1l3vrbx4" path="res://sounds/tick.mp3" id="4_6bm6p"]
 [ext_resource type="AudioStream" uid="uid://dniwsywqv3up8" path="res://sounds/typing.mp3" id="5_dugkq"]
+[ext_resource type="AudioStream" uid="uid://bx6okbx7ndkit" path="res://sounds/victory.mp3" id="6_2pltu"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_yx7mw"]
 
@@ -87,3 +88,6 @@ stream = ExtResource("4_6bm6p")
 
 [node name="typingSound" type="AudioStreamPlayer2D" parent="." unique_id=1148828520]
 stream = ExtResource("5_dugkq")
+
+[node name="victorySound" type="AudioStreamPlayer2D" parent="." unique_id=1143235241]
+stream = ExtResource("6_2pltu")
