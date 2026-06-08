@@ -32,7 +32,7 @@ func type_text(text_to_show: String):
 	chat_display.text = full_text
 	chat_display.visible_characters = 0
 	typing_progress = 0.0
-	$typingSound.play()
+	$Sounds/typingSound.play()
 
 func show_current_question() -> void:
 	if GameManager.player_penalties >= 3:
@@ -52,7 +52,7 @@ func show_current_question() -> void:
 		else:
 			chat_display.text = "😐 ЗМІНУ ЗАВЕРШЕНО...\n\nАле ви закінчили день у мінусі. Старайтеся краще наступного رازом."
 		_end_game_state()
-		$victorySound.play()
+		$Sounds/victorySound.play()
 		timer.stop()
 
 func _on_button_1_pressed() -> void:
@@ -73,12 +73,12 @@ func check_answer(player_choice: int) -> void:
 	if player_choice == q["correct"]:
 		GameManager.player_money += q["reward"]
 		print("Результат: ПРАВИЛЬНО! Нараховано +", q["reward"], " $")
-		$successSound.play()
+		$Sounds/successSound.play()
 	else:
 		GameManager.player_money -= q["penalty"]
 		GameManager.player_penalties += 1
 		print("Результат: ПОМИЛКА! Штраф -", q["penalty"], " $ | Всього штрафів: ", GameManager.player_penalties)
-		$failSound.play()
+		$Sounds/failSound.play()
 	
 	GameManager.current_question_index += 1
 	print("Стан гри: Перехід до наступного індексу: ", GameManager.current_question_index)
@@ -101,10 +101,10 @@ func _on_timer_timeout():
 	
 	timerLabel.text = "%02d:%02d" % [minutes, secs]
 
-	$tickSound.play()
+	$Sounds/tickSound.play()
 
 	if timeLeft <= 0:
-		$failSound.play()
+		$Sounds/failSound.play()
 		timer.stop()
 		print("Час вийшов!")
 		_end_game_state()
@@ -121,4 +121,4 @@ func _process(delta):
 			full_text.length() * min(percent, 1.0)
 		)
 	if chat_display.visible_characters >= full_text.length():
-		$typingSound.stop()
+		$Sounds/typingSound.stop()
